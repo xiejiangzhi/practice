@@ -20,8 +20,8 @@ using Xlib::Array::Box;
 
 // map,  current pos, history pos, move sum
 // return count route
-int map_routes(Box * maps, int start_pos, int stop_pos);
-int each_maps(Box * maps, int point, Box &history, int sum);
+int map_routes(Box &maps, int start_pos, int stop_pos);
+int each_maps(Box &maps, int point, Box &history, int sum);
 
 void show_maps(Box &maps, int max_x, int max_y);
 void show_route(Box &maps);
@@ -51,7 +51,7 @@ int main(int argc, char **argv, char **envp){
   cout<<"map: "<<endl;
   show_maps(*m, MAX, MAX);
 
-  cout<<"count routes: "<<each_maps(m, START, *history, 0)<<endl;
+  cout<<"count routes: "<<each_maps(*m, START, *history, 0)<<endl;
 
   delete history;
   delete m;
@@ -60,11 +60,11 @@ int main(int argc, char **argv, char **envp){
 }
 
 
-int map_routes(Box * maps, int start_pos, int stop_pos) {
+int map_routes(Box &maps, int start_pos, int stop_pos) {
 
 }
 
-int each_maps(Box *maps, int p, Box &history, int sum) {
+int each_maps(Box &maps, int p, Box &history, int sum) {
   // save current pos
   int x = HIGH_X(p), y = LOW_Y(p);
   history(sum) = POINT(x, y);
@@ -82,20 +82,20 @@ int each_maps(Box *maps, int p, Box &history, int sum) {
 
 
   // move x
-  if ((x + 1) < MAX && (*maps)(x + 1, y)) {
+  if ((x + 1) < MAX && maps(x + 1, y)) {
     Box x_history = history;
 
     count += each_maps(maps, POINT(x + 1, y), x_history, sum + 1);
   }
 
   // move y
-  if ((y + 1) < MAX && (*maps)(x, y + 1)) {
+  if ((y + 1) < MAX && maps(x, y + 1)) {
     Box y_history = history;
 
     count += each_maps(maps, POINT(x, y + 1), y_history, sum + 1);
   }
 
-  if ( (x + 1) < MAX && (y + 1) < MAX && (*maps)(x + 1, y + 1)) {
+  if ( (x + 1) < MAX && (y + 1) < MAX && maps(x + 1, y + 1)) {
     Box xy_history = history;
 
     count += each_maps(maps, POINT(x + 1, y + 1), xy_history, sum + 1);
