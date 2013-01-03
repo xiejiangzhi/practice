@@ -1,5 +1,5 @@
 
-xlib_path = "../Xlib/xlib.a"
+JZlib_path = "../JZlib/JZlib.a"
 
 
 # run
@@ -14,10 +14,10 @@ gdb: clean debug_out
 
 # out
 debug_out: main.cpp
-	g++ -g -o out main.cpp $(xlib_path)
+	g++ -g -o out main.cpp $(JZlib_path)
 
 out: main.o
-	g++ -o out main.o $(xlib_path)
+	g++ -o out main.o $(JZlib_path)
 
 
 

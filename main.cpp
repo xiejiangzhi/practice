@@ -1,10 +1,10 @@
 #include <iostream>
-#include "../Xlib/heads/array.h"
+#include "../JZlib/heads/array.h"
 
 using std::cout;
 using std::endl;
 using std::cin;
-using Xlib::Array::Box;
+using JZlib::Array::Box;
 
 #define MAX 10
 #define X 0,
@@ -47,7 +47,7 @@ int main(int argc, char **argv, char **envp){
     }
   }
 
-  int start = POINT(9, 9), stop = POINT(0, 0);
+  int start = POINT(4, 5), stop = POINT(0, 0);
 
   cout<<"map: "<<endl;
   show_map(map, MAX, MAX, start, stop);
@@ -60,7 +60,7 @@ int main(int argc, char **argv, char **envp){
 
 int map_routes(const Box &map, int start_pos, int stop_pos) {
   // max x + y..
-  Box history = Box(map.x() + map.y() + map.z());
+  Box history = map.size();
 
   return each_map(map, start_pos, stop_pos, history, 0);
 }
@@ -74,7 +74,8 @@ int each_map(const Box &map, int start_pos, int stop_pos, Box &history, int sum)
   history(sum) = start_pos;
 
   // if end
-  if (x == e_x && y == e_y) {
+  if (start_pos == stop_pos) {
+    cout<<"show"<<endl;
     // end identifier
     history(sum + 1) = MAXINT;
 
@@ -83,23 +84,21 @@ int each_map(const Box &map, int start_pos, int stop_pos, Box &history, int sum)
     return 1;
   }
 
-  cout<<"start"<<endl;
   int count = 0;
   // -1 and 1
   for (int i = -1; i < 2; i += 2) {
     // next pos
     int next_x = (x + i);
     int next_y = (y + i);
-    int points[2] = {
-      POINT(next_x, y), /*POINT(next_x, next_y),*/ POINT(x, next_y)
+    int points[][2] = {
+      {next_x, y}, {next_x, next_y}, {x, next_y}
     };
 
     for (int j = 0; j < (sizeof(points) / sizeof(points[0])); j++) {
-      int point = points[j];
-      int px = HIGH_X(point), py = LOW_Y(point);
+      int px = points[j][0], py = points[j][1];
+      int point = POINT(px, py);
 
-      if ( map.between(px, py) && map(px, py) && history.find(point) < 0 ) {
-        cout<<"("<<px<<", "<<py<<")"<<endl;
+      if ( map.between(px, py) && map(px, py) && history.find(point, sum) < 0 ) {
         Box h = history;
 
         count += each_map(map, point, stop_pos, h, sum + 1);
@@ -134,6 +133,8 @@ void init_box(Box &box, int sum, Box *route) {
 
     if ( pos == MAXINT ) { break; }
     
+    int status;
+
     box(HIGH_X(pos), LOW_Y(pos)) = 1;
   }
 }
@@ -144,7 +145,9 @@ void show_map(Box &map, int max_x, int max_y, int start, int stop) {
 
   for (int i = 0; i < max_y; i++) {
     for (int j = 0; j < max_x; j++) {
-      if ( map(j, i) ) {
+      int val = map(j, i);
+
+      if ( val ) {
         if (i == y && j == x) {
           cout<<"S";
         } else if (i == s_y && j == s_x) {
