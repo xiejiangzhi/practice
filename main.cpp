@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../JZlib/heads/array.h"
+#include "../JZlib/heads/jzlib.h"
 
 using std::cout;
 using std::endl;
@@ -30,13 +30,13 @@ int main(int argc, char **argv, char **envp){
     O O O O O O O O O O
     O O X X X O X X X O
     O O X X X O X X X O
-    O X O X X O O O O O
+    O X O X X O X O O O
     O X X O X X X X O O
     O X X X O X X X X O
     O O O X X O X X X O
-    O X X O X X O X X O
+    O X X O X X X X X O
     O X X X O X X O X O
-    O O O O O O O O O O
+    O O O O O X O O O O
   };
 
   Box map = Box(MAX, MAX);
