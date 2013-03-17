@@ -5,7 +5,7 @@ JZlib_path = "../JZlib/JZlib.a"
 # run
 run: clean out
 	reset
-	./out
+	./out < test_data
 
 gdb: clean debug_out
 	reset
@@ -17,8 +17,8 @@ debug_out: main.cpp
 	g++ -g -o out main.cpp $(JZlib_path)
 
 out: main.o
-	g++ -o out main.o $(JZlib_path)
-
+	#g++ -o out main.o $(JZlib_path)
+	g++ -o out main.o
 
 
 # compile
