@@ -14,10 +14,9 @@ gdb: clean debug_out
 
 # out
 debug_out: main.cpp
-	g++ -g -o out main.cpp $(JZlib_path)
+	g++ -g -o out main.cpp
 
 out: main.o
-	#g++ -o out main.o $(JZlib_path)
 	g++ -o out main.o
 
 
